@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Microsoft Managed Recommended Rules" Description="" ToolsVersion="10.0">
+  <Localization ResourceAssembly="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.dll" ResourceBaseName="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.Localized">
+    <Name Resource="MinimumRecommendedRules_Name" />
+    <Description Resource="MinimumRecommendedRules_Description" />
+  </Localization>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1600" Action="None" />
+    <!-- Elements should be documented -->
+    <Rule Id="SA1633" Action="None" />
+    <!-- File should have header -->
+    <Rule Id="SA0001" Action="None" />
+    <!-- XML comments -->
+    <Rule Id="SA1101" Action="None" />
+    <!-- Prefix local calls with this -->
+    <Rule Id="SA1116" Action="None" />
+    <!-- Split parameters should start on line after declaration -->
+    <Rule Id="SA1309" Action="None" />
+    <!-- Field names should not begin with underscore -->
+    <Rule Id="SA1204" Action="None" />
+    <!-- Static elements should appear before instance elements -->
+    <Rule Id="SA1604" Action="None" />
+    <!-- Element documentation should have summary -->
+    <Rule Id="SA1516" Action="None" />
+    <!-- Elements should be separated by blank line -->
+    <Rule Id="SA1128" Action="None" />
+    <!-- Put constructor initializers on their own line -->
+    <Rule Id="SA1413" Action="None" />
+    <!-- Use trailing comma in multi-line initializers -->
+    <Rule Id="SA1117" Action="None" />
+    <!-- Parameters should be on same line or separate lines -->
+    <Rule Id="SA1602" Action="None" />
+    <!-- Enumeration items should be documented -->
+    <Rule Id="SA1108" Action="None" />
+    <!-- Block statements should not contain embedded comments -->
+    <Rule Id="SA1601" Action="None" />
+    <!-- Partial elements should be documented -->
+    <Rule Id="SA1515" Action="None" />
+    <!-- Single-line comment should be preceded by blank line -->
+    <Rule Id="SA1512" Action="None" />
+    <!-- Single-line comments should not be followed by blank line -->
+    <Rule Id="SA1127" Action="None" />
+    <!-- Generic type constraints should be on their own line -->
+    <Rule Id="SA1501" Action="None" />
+    <!-- Statement should not be on a single line -->
+    <Rule Id="SA1502" Action="None" />
+    <!-- Element should not be on a single line -->
+    <Rule Id="SA1203" Action="None" />
+    <!-- Constants should appear before fields -->
+    <Rule Id="SA1200" Action="None" />
+    <!-- Using directives must be placed correctly -->
+    <Rule Id="SA1100" Action="None" />
+    <!-- DoNotPrefixCallsWithBaseUnlessLocalImplementationExists -->
+    <Rule Id="SA1201" Action="None" />
+    <!-- ElementsMustAppearInTheCorrectOrder -->
+    <Rule Id="SA1615" Action="None" />
+    <!-- ElementReturnValueMustBeDocumented -->
+    <Rule Id="SA1629" Action="None" />
+    <!-- DocumentationTextMustEndWithAPeriod -->
+    <Rule Id="SA1611" Action="None" />
+    <!-- ElementParametersMustBeDocumented -->
+    <Rule Id="CA2254" Action="None" />
+    <!-- Template should be a static expression -->
+    <Rule Id="CA1848" Action="None" />
+    <!-- Use the LoggerMessage delegates -->
+    <Rule Id="CA5404" Action="None" />
+    <!-- Do not disable token validation checks -->
+    <Rule Id="CA1707" Action="None" />
+    <!-- Identifiers should not contain underscores -->
+    <Rule Id="CA1716" Action="None" />
+    <!-- Identifiers should not match keywords -->
+    <Rule Id="CA1852" Action="None" />
+    <!-- Seal internal types -->
+    <Rule Id="SA1000" Action="None" />
+    <!-- The keyword 'new' should not be followed by a space -->
+    <Rule Id="SA1623" Action="None" />
+    <!-- The property's documentation summary text should begin with: 'Gets or sets' -->
+  </Rules>
+</RuleSet>

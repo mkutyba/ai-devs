@@ -1,0 +1,8 @@
+**/bin
+**/debug
+**/obj
+**/internal-nlog.txt
+**/.vscode
+**/.vs
+/.idea
+/.run
