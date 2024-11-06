@@ -75,5 +75,7 @@
     <!-- The keyword 'new' should not be followed by a space -->
     <Rule Id="SA1623" Action="None" />
     <!-- The property's documentation summary text should begin with: 'Gets or sets' -->
+    <Rule Id="SA1313" Action="None" />
+    <Rule Id="SA1206" Action="None" />
   </Rules>
 </RuleSet>
