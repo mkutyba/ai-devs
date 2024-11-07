@@ -45,10 +45,10 @@ public class OpenAiService : IOpenAiService
             </rules>
 
             <snippet_examples>
-            USER: Kiedy powstał Instagram?
+            USER: When was Instagram created?
             AI: 2010
 
-            USER: Rok urodzenia Chopina?
+            USER: Chopin birth date?
             AI: 1810
             </snippet_examples>
 
@@ -57,7 +57,7 @@ public class OpenAiService : IOpenAiService
         history.AddSystemMessage(systemMessage);
         _logger.LogDebug("OpenAI system message: {SystemMessage}", systemMessage);
 
-        var userMessage = "Odpowiedz na następujące pytanie: " + question;
+        var userMessage = "Answer the following question: " + question;
         _logger.LogDebug("OpenAI user message: {UserMessage}", userMessage);
         history.AddUserMessage(userMessage);
 
