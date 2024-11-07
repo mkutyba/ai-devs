@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Agent.Application.Abstractions;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace Agent.Infrastructure.OpenAi;
-
-public interface IOpenAiService
-{
-    Task<string> GetAnswerToSimpleQuestionAsync(string question, CancellationToken ct);
-}
 
 public class OpenAiService : IOpenAiService
 {

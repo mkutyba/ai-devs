@@ -1,26 +1,25 @@
+using System.Reflection;
+using Agent.API;
 using Agent.API.Extensions;
-using Agent.Application.RobotLogin;
+using Agent.Application;
 using Agent.Infrastructure.Extensions;
-using Agent.Infrastructure.OpenAi;
-using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
-builder.Logging.ClearProviders().AddSerilog();
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddOpenApi();
-builder.Services.RegisterSettings(builder.Configuration);
-builder.Services.AddOpenAi(builder.Configuration);
+builder.Services.AddApplication();
+builder.Services.AddPresentation(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
 builder.Services.AddHttpClient();
-builder.Services.AddTransient<IOpenAiService, OpenAiService>();
-builder.Services.AddTransient<IRobotLoginService, RobotLoginService>();
 
 var app = builder.Build();
+
+app.MapEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -30,16 +29,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/task1", async ([FromServices] IRobotLoginService robotLoginService, CancellationToken ct) =>
+app.UseRequestContextLogging();
+
+app.UseSerilogRequestLogging();
+
+await app.RunAsync();
+
+// REMARK: Required for functional and integration tests to work.
+namespace Agent.API
 {
-    var result = await robotLoginService.PerformLoginAsync(ct);
-
-    if (result.IsSuccess)
-    {
-        return Results.Ok(result.Content);
-    }
-
-    return Results.Problem(result.Content, statusCode: 500);
-});
-
-app.Run();
+    public partial class Program;
+}

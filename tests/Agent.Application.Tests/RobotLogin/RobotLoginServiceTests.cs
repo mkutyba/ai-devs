@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using Agent.Application.Abstractions;
 using Agent.Application.RobotLogin;
-using Agent.Infrastructure.OpenAi;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RichardSzalay.MockHttp;

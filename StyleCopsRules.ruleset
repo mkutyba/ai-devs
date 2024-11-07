@@ -77,5 +77,6 @@
     <!-- The property's documentation summary text should begin with: 'Gets or sets' -->
     <Rule Id="SA1313" Action="None" />
     <Rule Id="SA1206" Action="None" />
+    <Rule Id="SA1649" Action="None" />
   </Rules>
 </RuleSet>

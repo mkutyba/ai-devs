@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Agent.Infrastructure.OpenAi;
+using Agent.Application.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

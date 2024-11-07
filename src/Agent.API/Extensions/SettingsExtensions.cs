@@ -3,9 +3,9 @@ using Agent.Infrastructure.OpenAi;
 
 namespace Agent.API.Extensions;
 
-public static class ServiceExtensions
+public static class SettingsExtensions
 {
-    public static void RegisterSettings(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions<RobotLoginSettings>()
             .Bind(configuration.GetSection(RobotLoginSettings.ConfigurationKey))
@@ -16,5 +16,7 @@ public static class ServiceExtensions
             .Bind(configuration.GetSection(OpenAiSettings.ConfigurationKey))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        return services;
     }
 }

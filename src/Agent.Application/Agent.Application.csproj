@@ -3,6 +3,7 @@
     <CodeAnalysisRuleSet>..\..\StyleCopsRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.SemanticKernel" />
     <PackageReference Include="StyleCop.Analyzers">
@@ -11,6 +12,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agent.Infrastructure\Agent.Infrastructure.csproj" />
+    <ProjectReference Include="..\Agent.Core\Agent.Core.csproj" />
   </ItemGroup>
 </Project>
