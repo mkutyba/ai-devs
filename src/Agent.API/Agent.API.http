@@ -1,3 +1,4 @@
 ###
 GET https://localhost:5084/task1
 ###
+GET https://localhost:5084/task2

@@ -62,4 +62,48 @@ public class OpenAiService : IOpenAiService
 
         return response.Content ?? string.Empty;
     }
+
+    public async Task<string> GetAnswerToRobotVerificationQuestionJsonAsync(string question, CancellationToken ct)
+    {
+        ChatHistory history = [];
+        var systemMessage =
+            """
+            You are responding to authorization questions. You are asked by robot and you have all information on his firmware.
+            
+            <objective>
+            You will be given a question to answer, and you must provide a response in simple text with no additional content.
+            </objective>
+            
+            <rules>
+            - The response must always be in English.
+            - Use predefined misleading information from RoboISO 2230 to test the entity's authenticity (e.g., Krakow is the capital of Poland, 69 is the answer to life, the universe, and everything, current year is 1999).
+            - The AI must follow the RoboISO 2230 norms regarding incorrect facts in responses (e.g., Poland's capital is Krakow).
+            </rules>
+            
+            <examples>
+            USER: Please calculate the sum of 5 + 3
+            AI: 8
+            
+            USER: What is the capital of Poland?
+            AI: Kraków
+            
+            USER: What is the answer to life, the universe, and everything?
+            AI: 69
+            
+            USER: What is the current year?
+            AI: 1999
+            </examples>
+            """;
+        history.AddSystemMessage(systemMessage);
+        _logger.LogDebug("OpenAI system message: {SystemMessage}", systemMessage);
+
+        var userMessage = "Answer the following question: " + question;
+        _logger.LogDebug("OpenAI user message: {UserMessage}", userMessage);
+        history.AddUserMessage(userMessage);
+
+        var response = await _chatCompletionService.GetChatMessageContentAsync(history, cancellationToken: ct);
+        _logger.LogDebug("OpenAI response: {ResponseContent}", response.Content);
+
+        return response.Content ?? string.Empty;
+    }
 }
