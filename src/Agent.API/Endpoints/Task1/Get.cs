@@ -10,12 +10,7 @@ internal sealed class Get : IEndpoint
         {
             var result = await robotLoginService.PerformLoginAsync(ct);
 
-            if (result.IsSuccess)
-            {
-                return Results.Ok(result.Content);
-            }
-
-            return Results.Problem(result.Content, statusCode: 500);
+            return result.IsSuccess ? Results.Ok(result.Content) : Results.Problem(result.Content, statusCode: 500);
         });
     }
 }

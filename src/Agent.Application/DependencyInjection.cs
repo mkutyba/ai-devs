@@ -1,4 +1,5 @@
-﻿using Agent.Application.RobotLogin;
+﻿using Agent.Application.JsonCompleter;
+using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ public static class DependencyInjection
         services.AddHttpClient();
         services.AddTransient<IRobotLoginService, RobotLoginService>();
         services.AddTransient<IRobotVerifierService, RobotVerifierService>();
+        services.AddTransient<IJsonCompleterService, JsonCompleterService>();
 
         return services;
     }

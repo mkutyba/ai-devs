@@ -64,8 +64,8 @@ public class RobotLoginService : IRobotLoginService
             { "answer", answer }
         };
 
-        var response = await _httpClient.PostAsync(loginPageUrl, new FormUrlEncodedContent(loginData));
-        var responseContent = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.PostAsync(loginPageUrl, new FormUrlEncodedContent(loginData), ct);
+        var responseContent = await response.Content.ReadAsStringAsync(ct);
 
         return new Result(response.IsSuccessStatusCode, responseContent);
     }

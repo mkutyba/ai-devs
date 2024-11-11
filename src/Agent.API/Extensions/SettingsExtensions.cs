@@ -1,4 +1,5 @@
-﻿using Agent.Application.RobotLogin;
+﻿using Agent.Application.JsonCompleter;
+using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
 using Agent.Infrastructure.OpenAi;
 
@@ -15,6 +16,11 @@ public static class SettingsExtensions
 
         services.AddOptions<RobotVerifierSettings>()
             .Bind(configuration.GetSection(RobotVerifierSettings.ConfigurationKey))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<JsonCompleterSettings>()
+            .Bind(configuration.GetSection(JsonCompleterSettings.ConfigurationKey))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
