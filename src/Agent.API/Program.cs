@@ -3,19 +3,21 @@ using Agent.API;
 using Agent.API.Extensions;
 using Agent.Application;
 using Agent.Infrastructure.Extensions;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
-
+builder.AddServiceDefaults();
 builder.Services.AddApplication();
 builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 builder.Services.AddHttpClient();
+
+builder.Services.AddHealthChecks()
+    .AddCheck("ping", () => new HealthCheckResult(HealthStatus.Healthy));
 
 var app = builder.Build();
 
@@ -29,9 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseRequestContextLogging();
-
-app.UseSerilogRequestLogging();
+app.MapDefaultEndpoints();
 
 await app.RunAsync();
 
