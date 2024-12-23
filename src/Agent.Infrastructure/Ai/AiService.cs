@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
-namespace Agent.Infrastructure.OpenAi;
+namespace Agent.Infrastructure.Ai;
 
 public class AiService : IAiService
 {

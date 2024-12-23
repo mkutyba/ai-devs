@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Agent.Infrastructure.OpenAi;
+namespace Agent.Infrastructure.Ai;
 
 public class OpenAiSettings
 {

@@ -1,7 +1,5 @@
-﻿using Agent.Application;
-using Agent.Application.Abstractions;
-using Agent.Infrastructure.OpenAi;
-using Ardalis.GuardClauses;
+﻿using Agent.Application.Abstractions;
+using Agent.Infrastructure.Ai;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
@@ -13,13 +11,13 @@ public static class ServiceExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddOpenAi(configuration)
+            .AddAi(configuration)
             .AddKernel();
 
         return services;
     }
 
-    private static IServiceCollection AddOpenAi(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IAiService, AiService>();
 
