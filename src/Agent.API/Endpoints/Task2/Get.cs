@@ -6,7 +6,7 @@ internal sealed class Get : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/task2", async (IRobotVerifierService robotVerifierService, CancellationToken ct) =>
+        app.MapGet("/task2", async (RobotVerifierService robotVerifierService, CancellationToken ct) =>
         {
             var result = await robotVerifierService.VerifyAsync(ct);
 

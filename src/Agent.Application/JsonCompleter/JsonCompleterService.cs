@@ -1,31 +1,25 @@
-﻿using System.Text;
-using Agent.Application.Abstractions;
+﻿using Agent.Application.Abstractions;
+using Agent.Application.Ai;
+using Agent.Application.Hq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCalc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Agent.Application.JsonCompleter;
 
-public interface IJsonCompleterService
+public class JsonCompleterService
 {
-    Task<Result> CompleteTheQuestAsync(CancellationToken ct);
-}
-
-public class JsonCompleterService : IJsonCompleterService
-{
-    private readonly HttpClient _httpClient;
     private readonly ILogger<JsonCompleterService> _logger;
-    private readonly IOpenAiService _openAiService;
-    private readonly JsonCompleterSettings _settings;
+    private readonly HqService _hqService;
+    private readonly IAiSimpleAnswerService _aiSimpleAnswerService;
+    private readonly HqSettings _settings;
 
-    public JsonCompleterService(HttpClient httpClient, ILogger<JsonCompleterService> logger, IOptions<JsonCompleterSettings> settings, IOpenAiService openAiService)
+    public JsonCompleterService(ILogger<JsonCompleterService> logger, IOptions<HqSettings> settings, HqService hqService, IAiSimpleAnswerService aiSimpleAnswerService)
     {
-        _httpClient = httpClient;
         _logger = logger;
-        _openAiService = openAiService;
+        _hqService = hqService;
+        _aiSimpleAnswerService = aiSimpleAnswerService;
         _settings = settings.Value;
     }
 
@@ -35,7 +29,7 @@ public class JsonCompleterService : IJsonCompleterService
 
         _logger.LogDebug("Getting file content");
 
-        var fileContent = await File.ReadAllTextAsync("json.txt", ct);
+        var fileContent = await File.ReadAllTextAsync("data/json.txt", ct);
         var jsonObject = JObject.Parse(fileContent);
         var testData = jsonObject["test-data"]?.ToArray();
 
@@ -64,7 +58,7 @@ public class JsonCompleterService : IJsonCompleterService
                 continue;
             }
 
-            var answer = await _openAiService.GetAnswerToSimpleQuestionAsync(question.ToString(), ct);
+            var answer = await _aiSimpleAnswerService.GetAnswerToSimpleQuestionAsync(question.ToString(), ct);
             testTest["a"] = answer;
         }
 
@@ -73,21 +67,10 @@ public class JsonCompleterService : IJsonCompleterService
 
         _logger.LogDebug("Sending answer: {Answer}", jsonObject.ToString());
 
-        var request = new CentralRequestModelTask3
-        {
-            Task = "JSON",
-            Apikey = apiKey,
-            Answer = jsonObject
-        };
-
-        var requestJson = JsonConvert.SerializeObject(request, new JsonSerializerSettings
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        });
-        var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(_settings.ReportUrl, content, ct);
-
+        var response = await _hqService.SendReportAsync("JSON", jsonObject, ct);
         var responseContent = await response.Content.ReadAsStringAsync(ct);
+
+        _logger.LogInformation("Response content: {ResponseContent}", responseContent);
 
         return new Result(response.IsSuccessStatusCode, responseContent);
     }

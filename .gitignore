@@ -6,3 +6,4 @@
 **/.vs
 /.idea
 /.run
+/src/Agent.API/data

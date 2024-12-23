@@ -15,7 +15,7 @@
     <ProjectReference Include="..\Agent.ServiceDefaults\Agent.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="json.txt">
+    <None Update="data/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

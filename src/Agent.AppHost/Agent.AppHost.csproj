@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ollama" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agent.API\Agent.API.csproj" />

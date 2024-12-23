@@ -1,7 +1,7 @@
-﻿using Agent.Application.JsonCompleter;
+﻿using Agent.Application.Abstractions;
+using Agent.Application.Hq;
 using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
-using Agent.Infrastructure.OpenAi;
 
 namespace Agent.API.Extensions;
 
@@ -19,13 +19,13 @@ public static class SettingsExtensions
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<JsonCompleterSettings>()
-            .Bind(configuration.GetSection(JsonCompleterSettings.ConfigurationKey))
+        services.AddOptions<HqSettings>()
+            .Bind(configuration.GetSection(HqSettings.ConfigurationKey))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<OpenAiSettings>()
-            .Bind(configuration.GetSection(OpenAiSettings.ConfigurationKey))
+        services.AddOptions<AiSettings>()
+            .Bind(configuration.GetSection(AiSettings.ConfigurationKey))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 

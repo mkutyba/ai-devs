@@ -1,27 +1,23 @@
 ﻿using System.Text.RegularExpressions;
 using Agent.Application.Abstractions;
+using Agent.Application.Ai;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Agent.Application.RobotLogin;
 
-public interface IRobotLoginService
-{
-    Task<Result> PerformLoginAsync(CancellationToken ct);
-}
-
-public class RobotLoginService : IRobotLoginService
+public class RobotLoginService
 {
     private readonly HttpClient _httpClient;
-    private readonly IOpenAiService _openAiService;
     private readonly ILogger<RobotLoginService> _logger;
+    private readonly IAiSimpleAnswerService _aiSimpleAnswerService;
     private readonly RobotLoginSettings _settings;
 
-    public RobotLoginService(HttpClient httpClient, IOptions<RobotLoginSettings> settings, IOpenAiService openAiService, ILogger<RobotLoginService> logger)
+    public RobotLoginService(HttpClient httpClient, IOptions<RobotLoginSettings> settings, ILogger<RobotLoginService> logger, IAiSimpleAnswerService aiSimpleAnswerService)
     {
         _httpClient = httpClient;
-        _openAiService = openAiService;
         _logger = logger;
+        _aiSimpleAnswerService = aiSimpleAnswerService;
         _settings = settings.Value;
     }
 
@@ -53,7 +49,7 @@ public class RobotLoginService : IRobotLoginService
 
         _logger.LogDebug("Login page question: {Question}", question);
 
-        var answer = await _openAiService.GetAnswerToSimpleQuestionAsync(question, ct);
+        var answer = await _aiSimpleAnswerService.GetAnswerToSimpleQuestionAsync(question, ct);
 
         _logger.LogDebug("Login page question answer: {Answer}", answer);
 

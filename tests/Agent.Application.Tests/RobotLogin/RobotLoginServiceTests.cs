@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Agent.Application.Abstractions;
+using Agent.Application.Ai;
 using Agent.Application.RobotLogin;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,7 +10,7 @@ namespace Agent.Application.Tests.RobotLogin;
 public class RobotLoginServiceTests
 {
     private readonly HttpClient _httpClient;
-    private readonly IOpenAiService _openAiService;
+    private readonly IAiSimpleAnswerService _aiSimpleAnswerService;
     private readonly ILogger<RobotLoginService> _logger;
     private readonly IOptions<RobotLoginSettings> _robotLoginSettings;
     private readonly RobotLoginService _sut;
@@ -19,7 +19,7 @@ public class RobotLoginServiceTests
     public RobotLoginServiceTests()
     {
         _httpClient = new HttpClient(_handlerMock);
-        _openAiService = Substitute.For<IOpenAiService>();
+        _aiSimpleAnswerService = Substitute.For<IAiSimpleAnswerService>();
         _logger = Substitute.For<ILogger<RobotLoginService>>();
         _robotLoginSettings = Options.Create(new RobotLoginSettings
         {
@@ -31,8 +31,8 @@ public class RobotLoginServiceTests
         _sut = new RobotLoginService(
             _httpClient,
             _robotLoginSettings,
-            _openAiService,
-            _logger);
+            _logger,
+            _aiSimpleAnswerService);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class RobotLoginServiceTests
             .When(HttpMethod.Post, "http://example.com/login")
             .Respond(HttpStatusCode.OK, "text/plain", "Login successful");
 
-        _openAiService.GetAnswerToSimpleQuestionAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _aiSimpleAnswerService.GetAnswerToSimpleQuestionAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(answer));
 
         // Act

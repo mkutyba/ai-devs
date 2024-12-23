@@ -5,10 +5,9 @@
 To run the project, use launch settings from `Agent.AppHost` and provide the following environment variables:
 
 ```
-Parameters:JsonCompleter-ApiKey=""
-Parameters:JsonCompleter-ApiKey=""
-Parameters:JsonCompleter-ReportUrl=""
-Parameters:OpenAi-ApiKey=""
+Parameters:Hq-ApiKey=""
+Parameters:Hq-BaseUrl=""
+Parameters:Ai-OpenAI-ApiKey=""
 Parameters:RobotLogin-PageUrl=""
 Parameters:RobotLogin-Password=""
 Parameters:RobotLogin-Username=""
@@ -35,9 +34,9 @@ If you are using Rider, you can create a `.run/Agent.AppHost.run.xml` file and u
             <env name="DOTNET_ENVIRONMENT" value="Development" />
             <env name="DOTNET_LAUNCH_PROFILE" value="https" />
             <env name="DOTNET_RESOURCE_SERVICE_ENDPOINT_URL" value="https://localhost:22257" />
-            <env name="Parameters:JsonCompleter-ApiKey" value="" />
-            <env name="Parameters:JsonCompleter-ReportUrl" value="" />
-            <env name="Parameters:OpenAi-ApiKey" value="" />
+            <env name="Parameters:Hq-ApiKey" value="" />
+            <env name="Parameters:Hq-BaseUrl" value="" />
+            <env name="Parameters:Ai-OpenAI-ApiKey" value="" />
             <env name="Parameters:RobotLogin-PageUrl" value="" />
             <env name="Parameters:RobotLogin-Password" value="" />
             <env name="Parameters:RobotLogin-Username" value="" />

@@ -1,14 +1,14 @@
-﻿using Agent.Application.RobotLogin;
+﻿using Agent.Application.Censor;
 
-namespace Agent.API.Endpoints.Task1;
+namespace Agent.API.Endpoints.Task5;
 
 internal sealed class Get : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/task1", async (RobotLoginService robotLoginService, CancellationToken ct) =>
+        app.MapGet("/task5", async (CensorService censorService, CancellationToken ct) =>
         {
-            var result = await robotLoginService.PerformLoginAsync(ct);
+            var result = await censorService.CompleteTheTaskAsync(ct);
 
             return result.IsSuccess ? Results.Ok(result.Content) : Results.Problem(result.Content, statusCode: 500);
         });

@@ -6,7 +6,7 @@ internal sealed class Get : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/task3", async (IJsonCompleterService jsonCompleterService, CancellationToken ct) =>
+        app.MapGet("/task3", async (JsonCompleterService jsonCompleterService, CancellationToken ct) =>
         {
             var result = await jsonCompleterService.CompleteTheQuestAsync(ct);
 
