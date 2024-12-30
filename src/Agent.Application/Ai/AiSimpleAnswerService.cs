@@ -52,6 +52,6 @@ public class AiSimpleAnswerService : IAiSimpleAnswerService
 
         var userMessage = "Answer the following question: " + question;
 
-        return await _aiService.GetChatCompletionAsync(ModelType.Gpt4o_Mini_202407, systemMessage, userMessage, ct);
+        return await _aiService.GetChatCompletionAsync(AiModelType.Gpt4o_Mini_202407, systemMessage, userMessage, ct);
     }
 }

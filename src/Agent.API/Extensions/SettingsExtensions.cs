@@ -1,5 +1,4 @@
-﻿using Agent.Application.Abstractions;
-using Agent.Application.Hq;
+﻿using Agent.Application.Hq;
 using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
 
@@ -21,11 +20,6 @@ public static class SettingsExtensions
 
         services.AddOptions<HqSettings>()
             .Bind(configuration.GetSection(HqSettings.ConfigurationKey))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
-        services.AddOptions<AiSettings>()
-            .Bind(configuration.GetSection(AiSettings.ConfigurationKey))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 

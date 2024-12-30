@@ -87,6 +87,6 @@ public class CensorService
                                      </output_structure>
                                      """;
 
-        return await _aiService.GetChatCompletionAsync(ModelType.Llama31_8b, systemMessage, data, ct);
+        return await _aiService.GetChatCompletionAsync(AiModelType.Llama31_8b, systemMessage, data, ct);
     }
 }

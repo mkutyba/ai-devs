@@ -1,13 +1,10 @@
-###
 GET https://localhost:5084/task1
-
 ###
 GET https://localhost:5084/task2
-
 ###
 GET https://localhost:5084/task3
-
 ###
 GET https://localhost:5084/task5
-
+###
+GET https://localhost:5084/task6
 ###

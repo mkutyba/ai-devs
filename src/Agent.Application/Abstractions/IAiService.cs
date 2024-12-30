@@ -2,5 +2,6 @@
 
 public interface IAiService
 {
-    Task<string> GetChatCompletionAsync(ModelType modelId, string systemMessage, string userMessage, CancellationToken ct);
+    Task<string> GetChatCompletionAsync(AiModelType modelId, string systemMessage, string userMessage, CancellationToken ct);
+    Task<string> GetAudioTranscriptionAsync(AiModelType modelId, string userMessage, Stream audioStream, string fileName, string language, CancellationToken ct);
 }

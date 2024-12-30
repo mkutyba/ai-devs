@@ -1,8 +1,10 @@
-﻿using Agent.Application.Abstractions;
+﻿using System.ClientModel;
+using Agent.Application.Abstractions;
 using Agent.Infrastructure.Ai;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
+using OpenAI;
 
 namespace Agent.Infrastructure.Extensions;
 
@@ -14,6 +16,8 @@ public static class ServiceExtensions
             .AddAi(configuration)
             .AddKernel();
 
+        services.AddSettings(configuration);
+
         return services;
     }
 
@@ -21,9 +25,15 @@ public static class ServiceExtensions
     {
         services.AddTransient<IAiService, AiService>();
 
+        services.ConfigureHttpClientDefaults(c =>
+            c.ConfigureHttpClient(x =>
+            {
+                x.Timeout = TimeSpan.FromMinutes(5);
+            }));
+
         var settings = configuration.GetSection(AiSettings.ConfigurationKey).Get<AiSettings>()!;
 
-        foreach (var type in ModelConfiguration.ModelTypes)
+        foreach (var type in AiModelConfiguration.ModelTypes)
         {
             var (modelId, provider) = type.Value;
 
@@ -36,17 +46,28 @@ public static class ServiceExtensions
             switch (provider)
             {
                 case AiProvider.OpenAI:
-                    services.AddOpenAIChatCompletion(modelId, settings.OpenAI.ApiKey!, serviceId: type.Key.ToString());
+                    services.AddOpenAIChatCompletion(modelId, settings.OpenAI.ApiKey!, type.Key);
                     break;
-
+                case AiProvider.OpenAIAudio:
+                    services.AddOpenAIAudioToText(modelId, settings.OpenAI.ApiKey!, serviceId: type.Key.ToString());
+                    break;
                 case AiProvider.Ollama:
-#pragma warning disable SKEXP0070
                     services.AddOllamaChatCompletion(modelId, httpClient, type.Key.ToString());
-#pragma warning restore SKEXP0070
                     break;
             }
         }
 
         return services;
+    }
+
+    private static IServiceCollection AddOpenAIChatCompletion(this IServiceCollection services, string modelId, string apiKey, AiModelType serviceId)
+    {
+        var clientOptions = new OpenAIClientOptions
+        {
+            NetworkTimeout = TimeSpan.FromMinutes(5)
+        };
+
+        var customClient = new OpenAIClient(new ApiKeyCredential(apiKey), clientOptions);
+        return services.AddOpenAIChatCompletion(modelId, customClient, serviceId: serviceId.ToString());
     }
 }

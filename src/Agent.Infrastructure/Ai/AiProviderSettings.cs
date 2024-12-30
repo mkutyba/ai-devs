@@ -1,4 +1,4 @@
-﻿namespace Agent.Application.Abstractions;
+﻿namespace Agent.Infrastructure.Ai;
 
 public class AiProviderSettings
 {

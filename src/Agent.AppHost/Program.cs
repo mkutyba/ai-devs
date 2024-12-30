@@ -9,7 +9,7 @@ var param6 = builder.AddParameter("Hq-ApiKey", secret: true);
 var param7 = builder.AddParameter("Ai-OpenAI-ApiKey", secret: true);
 
 var ollama = builder.AddOllama("ollama").WithDataVolume().WithHttpEndpoint(port: 11434, targetPort: 11434, name: "ollama");
-var phi35 = ollama.AddModel("phi3.5");
+var phi35 = ollama.AddModel("ollama-phi", "phi3.5");
 var llama31_8b = ollama.AddModel("llama3.1:8b");
 if (OllamaSupportsGpu())
 {

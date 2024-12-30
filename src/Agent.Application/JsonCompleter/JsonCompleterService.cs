@@ -1,5 +1,4 @@
-﻿using Agent.Application.Abstractions;
-using Agent.Application.Ai;
+﻿using Agent.Application.Ai;
 using Agent.Application.Hq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Agent.Application.Hq;
+﻿namespace Agent.Application.Hq;
 
 public class HqRequestModel
 {
