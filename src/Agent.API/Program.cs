@@ -14,8 +14,6 @@ builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
-builder.Services.AddHttpClient();
-
 builder.Services.AddHealthChecks()
     .AddCheck("ping", () => new HealthCheckResult(HealthStatus.Healthy));
 

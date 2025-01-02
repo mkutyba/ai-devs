@@ -15,7 +15,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddHttpClient();
+        services
+            .AddHttpClient(HttpClientType.ResilientClient)
+            .AddStandardResilienceHandler();
         services.AddTransient<RobotLoginService>();
         services.AddTransient<RobotVerifierService>();
         services.AddTransient<JsonCompleterService>();
@@ -25,6 +27,7 @@ public static class DependencyInjection
         services.AddTransient<InformationExtractorService>();
         services.AddTransient<SpeechToTextService>();
         services.AddTransient<MapAnalysisService>();
+        services.AddTransient<ImageGenerationService>();
 
         return services;
     }

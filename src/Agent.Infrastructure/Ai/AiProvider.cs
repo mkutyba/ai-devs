@@ -4,5 +4,6 @@ public enum AiProvider
 {
     OpenAI,
     OpenAIAudio,
-    Ollama
+    OpenAIImage,
+    Ollama,
 }

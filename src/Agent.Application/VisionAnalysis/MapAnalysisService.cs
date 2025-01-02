@@ -14,17 +14,33 @@ public class MapAnalysisService
         _logger = logger;
     }
 
-    public async Task<string> GetMapDescriptionAsync(byte[] imageBytes, CancellationToken ct)
+    public async Task<Result> CompleteTask7Async(CancellationToken ct)
+    {
+        var imagePaths = Directory.GetFiles("data/mapka", "*.png", SearchOption.AllDirectories).ToList();
+
+        var descriptions = new List<string>();
+        foreach (var imagePath in imagePaths)
+        {
+            var imageBytes = await File.ReadAllBytesAsync(imagePath, ct);
+            _logger.LogDebug("Processing image: {ImagePath}", imagePath);
+
+            var description = await GetMapDescriptionAsync(imageBytes, ct);
+            descriptions.Add(description);
+            _logger.LogDebug("Image description: {Description}", description);
+        }
+
+        var result = await GuessTheCityAsync(descriptions, ct);
+
+        return new Result(true, result);
+    }
+
+    private async Task<string> GetMapDescriptionAsync(byte[] imageBytes, CancellationToken ct)
     {
         const string systemMessage = """
                                      You are an expert at analyzing modern Polish maps. List street names road numbers and landmarks from the map fragment that could help identify the city.
                                      Think out loud and describe each found element in detail. Do not focus on the most famous places for a given city, look at the bigger picture.
                                      Use cross-referencing these street names with cities in Poland.";
                                      """;
-        // const string userMessageOld = """
-        //                            Analyze the map fragment and describe what you see to identify the city. Provide reasoning for your answer first and then list the street names, road numbers,
-        //                            and landmarks that could help identify the city. Use cross-referencing these street names with cities in Poland."
-        //                            """;
         const string userMessage = """
                                    Analyze the map fragment and describe what you see to identify the city. List the street names, road numbers,
                                    and landmarks that could help identify the city. Use cross-referencing these street names with cities in Poland."
@@ -35,7 +51,7 @@ public class MapAnalysisService
         return await _aiService.GetVisionChatCompletionAsync(AiModelType.Gpt4o_202411, systemMessage, userMessage, [imageData], ct);
     }
 
-    public async Task<string> GuessTheCityAsync(List<string> imageDescriptions, CancellationToken ct)
+    private async Task<string> GuessTheCityAsync(List<string> imageDescriptions, CancellationToken ct)
     {
         const string systemMessage = """
                                      You are an expert at analyzing historical maps and identifying cities.
@@ -73,25 +89,5 @@ public class MapAnalysisService
         _logger.LogInformation("City name: {CityName}", cityName);
 
         return cityName;
-    }
-
-    public async Task<Result> CompleteTask7Async(CancellationToken ct)
-    {
-        var imagePaths = Directory.GetFiles("data/mapka", "*.png", SearchOption.AllDirectories).ToList();
-
-        var descriptions = new List<string>();
-        foreach (var imagePath in imagePaths)
-        {
-            var imageBytes = await File.ReadAllBytesAsync(imagePath, ct);
-            _logger.LogDebug("Processing image: {ImagePath}", imagePath);
-
-            var description = await GetMapDescriptionAsync(imageBytes, ct);
-            descriptions.Add(description);
-            _logger.LogDebug("Image description: {Description}", description);
-        }
-
-        var result = await GuessTheCityAsync(descriptions, ct);
-
-        return new Result(true, result);
     }
 }

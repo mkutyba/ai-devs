@@ -12,5 +12,6 @@ public static class AiModelConfiguration
             { AiModelType.Llama31_8b, ("llama3.1:8b", AiProvider.Ollama) },
             { AiModelType.Phi35, ("phi3.5", AiProvider.Ollama) },
             { AiModelType.Whisper1, ("whisper-1", AiProvider.OpenAIAudio) },
+            { AiModelType.Dalle3, ("dall-e-3", AiProvider.OpenAIImage) },
         };
 }

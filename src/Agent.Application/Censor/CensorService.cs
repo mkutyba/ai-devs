@@ -1,33 +1,25 @@
 ﻿using Agent.Application.Abstractions;
 using Agent.Application.Hq;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Agent.Application.Censor;
 
 public class CensorService
 {
-    private readonly HttpClient _httpClient;
     private readonly ILogger<CensorService> _logger;
     private readonly HqService _hqService;
     private readonly IAiService _aiService;
-    private readonly HqSettings _hqSettings;
 
-    public CensorService(HttpClient httpClient, IOptions<HqSettings> hqSettings, ILogger<CensorService> logger, HqService hqService, IAiService aiService)
+    public CensorService(ILogger<CensorService> logger, HqService hqService, IAiService aiService)
     {
-        _httpClient = httpClient;
         _logger = logger;
         _hqService = hqService;
         _aiService = aiService;
-        _hqSettings = hqSettings.Value;
     }
 
     public async Task<Result> CompleteTheTaskAsync(CancellationToken ct)
     {
-        var url = $"{_hqSettings.BaseUrl}/data/{_hqSettings.ApiKey}/cenzura.txt";
-
-        _logger.LogInformation("Fetching file from {Url}", url);
-        var data = await _httpClient.GetStringAsync(url, ct);
+        var data = await _hqService.GetDataToCensor(ct);
         _logger.LogInformation("Retrieved raw data: {Data}", data);
         var result = await CensorAgentData(data, ct);
 

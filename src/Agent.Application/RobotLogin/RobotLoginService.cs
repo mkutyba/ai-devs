@@ -12,9 +12,9 @@ public class RobotLoginService
     private readonly IAiSimpleAnswerService _aiSimpleAnswerService;
     private readonly RobotLoginSettings _settings;
 
-    public RobotLoginService(HttpClient httpClient, IOptions<RobotLoginSettings> settings, ILogger<RobotLoginService> logger, IAiSimpleAnswerService aiSimpleAnswerService)
+    public RobotLoginService(IHttpClientFactory httpClientFactory, IOptions<RobotLoginSettings> settings, ILogger<RobotLoginService> logger, IAiSimpleAnswerService aiSimpleAnswerService)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(HttpClientType.ResilientClient);
         _logger = logger;
         _aiSimpleAnswerService = aiSimpleAnswerService;
         _settings = settings.Value;

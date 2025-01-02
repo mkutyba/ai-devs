@@ -12,9 +12,9 @@ public class RobotVerifierService
     private readonly ILogger<RobotVerifierService> _logger;
     private readonly RobotVerifierSettings _settings;
 
-    public RobotVerifierService(HttpClient httpClient, IAiService aiService, ILogger<RobotVerifierService> logger, IOptions<RobotVerifierSettings> settings)
+    public RobotVerifierService(IHttpClientFactory httpClientFactory, IAiService aiService, ILogger<RobotVerifierService> logger, IOptions<RobotVerifierSettings> settings)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(HttpClientType.ResilientClient);
         _aiService = aiService;
         _logger = logger;
         _settings = settings.Value;

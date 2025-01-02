@@ -7,4 +7,5 @@ public enum AiModelType
     Phi35,
     Whisper1,
     Gpt4o_202411,
+    Dalle3,
 }

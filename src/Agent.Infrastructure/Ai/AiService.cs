@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AudioToText;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.TextToImage;
 
 namespace Agent.Infrastructure.Ai;
 
@@ -83,4 +84,39 @@ public class AiService : IAiService
 
         return response.Content ?? string.Empty;
     }
+
+    public async Task<string> GenerateImageAsync(AiModelType modelId, string userMessage, AiImageSize imageSize, AiImageQuality imageQuality, CancellationToken ct)
+    {
+        if (modelId != AiModelType.Dalle3)
+        {
+            throw new InvalidOperationException("Only DALL·E 3 model supports image generation");
+        }
+
+        var textToImageService = _kernel.GetRequiredService<ITextToImageService>(modelId.ToString());
+
+        var executionSettings = new OpenAITextToImageExecutionSettings
+        {
+            Size = GetImageDimensions(imageSize),
+            Quality = GetImageQuality(imageQuality),
+        };
+
+        var result = await textToImageService.GetImageContentsAsync(new TextContent(userMessage), executionSettings, cancellationToken: ct);
+
+        return result[0].Uri?.ToString() ?? string.Empty;
+    }
+
+    private static (int Width, int Height) GetImageDimensions(AiImageSize size) =>
+        size switch
+        {
+            AiImageSize.Square1024 => (1024, 1024),
+            _ => throw new ArgumentOutOfRangeException(nameof(size))
+        };
+
+    private static string GetImageQuality(AiImageQuality quality) =>
+        quality switch
+        {
+            AiImageQuality.Standard => "standard",
+            AiImageQuality.Hd => "hd",
+            _ => throw new ArgumentOutOfRangeException(nameof(quality))
+        };
 }
