@@ -10,6 +10,7 @@ namespace Agent.Application.Tests.RobotLogin;
 public class RobotLoginServiceTests
 {
     private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly IAiSimpleAnswerService _aiSimpleAnswerService;
     private readonly ILogger<RobotLoginService> _logger;
     private readonly IOptions<RobotLoginSettings> _robotLoginSettings;
@@ -19,6 +20,8 @@ public class RobotLoginServiceTests
     public RobotLoginServiceTests()
     {
         _httpClient = new HttpClient(_handlerMock);
+        _httpClientFactory = Substitute.For<IHttpClientFactory>();
+        _httpClientFactory.CreateClient(HttpClientType.ResilientClient).Returns(_httpClient);
         _aiSimpleAnswerService = Substitute.For<IAiSimpleAnswerService>();
         _logger = Substitute.For<ILogger<RobotLoginService>>();
         _robotLoginSettings = Options.Create(new RobotLoginSettings
@@ -29,7 +32,7 @@ public class RobotLoginServiceTests
         });
 
         _sut = new RobotLoginService(
-            _httpClient,
+            _httpClientFactory,
             _robotLoginSettings,
             _logger,
             _aiSimpleAnswerService);
