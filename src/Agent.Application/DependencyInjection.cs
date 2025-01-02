@@ -6,6 +6,7 @@ using Agent.Application.InformationExtractor;
 using Agent.Application.JsonCompleter;
 using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
+using Agent.Application.VisionAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Agent.Application;
@@ -22,7 +23,8 @@ public static class DependencyInjection
         services.AddTransient<IAiSimpleAnswerService, AiSimpleAnswerService>();
         services.AddTransient<CensorService>();
         services.AddTransient<InformationExtractorService>();
-        services.AddTransient<ISpeechToTextService, SpeechToTextService>();
+        services.AddTransient<SpeechToTextService>();
+        services.AddTransient<MapAnalysisService>();
 
         return services;
     }

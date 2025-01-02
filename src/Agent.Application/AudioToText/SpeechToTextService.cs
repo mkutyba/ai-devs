@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Agent.Application.AudioToText;
 
-public class SpeechToTextService : ISpeechToTextService
+public class SpeechToTextService
 {
     private readonly IAiService _aiService;
     private readonly ILogger<SpeechToTextService> _logger;

@@ -57,4 +57,30 @@ public class AiService : IAiService
 
         return result.Text;
     }
+
+    public async Task<string> GetVisionChatCompletionAsync(AiModelType modelId, string systemMessage, string userMessage, IReadOnlyCollection<ReadOnlyMemory<byte>> imageData, CancellationToken ct)
+    {
+        ChatHistory history = [];
+        history.AddSystemMessage(systemMessage);
+        _logger.LogDebug("Chat system message: {SystemMessage}", systemMessage);
+
+        _logger.LogDebug("Chat user message: {UserMessage}", userMessage);
+        var messageContent = new ChatMessageContentItemCollection
+        {
+            new TextContent(userMessage)
+        };
+
+        foreach (var imageBytes in imageData)
+        {
+            messageContent.Add(new ImageContent(imageBytes, "image/png"));
+        }
+
+        history.AddUserMessage(messageContent);
+
+        var chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>(modelId.ToString());
+        var response = await chatCompletionService.GetChatMessageContentAsync(history, cancellationToken: ct);
+        _logger.LogDebug("Chat response: {ResponseContent}", response.Content);
+
+        return response.Content ?? string.Empty;
+    }
 }

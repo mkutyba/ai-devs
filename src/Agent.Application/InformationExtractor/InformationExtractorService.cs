@@ -3,22 +3,18 @@ using Agent.Application.Abstractions;
 using Agent.Application.AudioToText;
 using Agent.Application.Hq;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Agent.Application.InformationExtractor;
 
 public class InformationExtractorService
 {
-    private readonly HqSettings _hqSettings;
     private readonly ILogger<InformationExtractorService> _logger;
     private readonly HqService _hqService;
-    private readonly ISpeechToTextService _speechToTextService;
+    private readonly SpeechToTextService _speechToTextService;
     private readonly IAiService _aiService;
 
-    public InformationExtractorService(IOptions<HqSettings> hqSettings, ILogger<InformationExtractorService> logger, HqService hqService, ISpeechToTextService speechToTextService,
-        IAiService aiService)
+    public InformationExtractorService(ILogger<InformationExtractorService> logger, HqService hqService, SpeechToTextService speechToTextService, IAiService aiService)
     {
-        _hqSettings = hqSettings.Value;
         _logger = logger;
         _hqService = hqService;
         _speechToTextService = speechToTextService;

@@ -8,3 +8,5 @@ GET https://localhost:5084/task5
 ###
 GET https://localhost:5084/task6
 ###
+GET https://localhost:5084/task7
+###
