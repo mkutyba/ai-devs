@@ -2,6 +2,7 @@
 using Agent.Application.AudioToText;
 using Agent.Application.Censor;
 using Agent.Application.Hq;
+using Agent.Application.InformationClassifier;
 using Agent.Application.InformationExtractor;
 using Agent.Application.JsonCompleter;
 using Agent.Application.RobotLogin;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         services.AddTransient<SpeechToTextService>();
         services.AddTransient<MapAnalysisService>();
         services.AddTransient<ImageGenerationService>();
+        services.AddTransient<InformationClassifierService>();
 
         return services;
     }

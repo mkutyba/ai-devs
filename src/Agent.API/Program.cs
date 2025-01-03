@@ -5,8 +5,15 @@ using Agent.Application;
 using Agent.Infrastructure.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Logging.AddSerilog();
 
 builder.AddServiceDefaults();
 builder.Services.AddApplication();

@@ -14,9 +14,9 @@ public class SpeechToTextService
         _logger = logger;
     }
 
-    public async Task<string> ConvertAudioToText(string audioFile, CancellationToken ct)
+    public async Task<string> ConvertAudioToText(string audioFile, string fileExtension, string language, CancellationToken ct)
     {
-        var transcriptionPath = Path.ChangeExtension(audioFile, ".txt");
+        var transcriptionPath = Path.ChangeExtension(audioFile, fileExtension);
 
         if (File.Exists(transcriptionPath))
         {
@@ -32,7 +32,7 @@ public class SpeechToTextService
             string.Empty,
             audioStream,
             Path.GetFileName(audioFile),
-            "pl",
+            language,
             ct);
 
         await File.WriteAllTextAsync(transcriptionPath, transcription, ct);

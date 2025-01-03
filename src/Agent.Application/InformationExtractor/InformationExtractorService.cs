@@ -29,7 +29,7 @@ public class InformationExtractorService
         foreach (var audioFile in audioFiles)
         {
             _logger.LogInformation("Starting transcription of {AudioFile}", audioFile);
-            var transcriptionFile = await _speechToTextService.ConvertAudioToText(audioFile, ct);
+            var transcriptionFile = await _speechToTextService.ConvertAudioToText(audioFile, ".txt", "pl", ct);
             _logger.LogInformation("Finished transcription of {AudioFile}", audioFile);
             transcriptionFiles.Add(transcriptionFile);
         }
