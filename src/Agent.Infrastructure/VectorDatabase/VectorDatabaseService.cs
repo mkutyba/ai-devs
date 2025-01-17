@@ -9,11 +9,13 @@ public class VectorDatabaseService : IVectorDatabaseService
 {
     private readonly IAiService _aiService;
     private readonly IVectorStore _vectorStore;
+    private readonly IVectorStoreRecordCollection<Guid, RagRecord> _recordCollection;
 
     public VectorDatabaseService(IAiService aiService, IVectorStore vectorStore)
     {
         _aiService = aiService;
         _vectorStore = vectorStore;
+        _recordCollection = _vectorStore.GetCollection<Guid, RagRecord>("learnings");
     }
 
     public async Task SaveArticleToVectorDbAsync(List<ArticleParagraph> paragraphs, CancellationToken ct)
@@ -41,16 +43,15 @@ public class VectorDatabaseService : IVectorDatabaseService
                     Id = Guid.NewGuid(),
                     Embedding = embedding,
                     Content = content.ToString(),
-                    Source = "Article",
+                    Source = VectorDatabaseCollection.Articles,
                     Type = "Text",
                     CreatedAt = DateTimeOffset.UtcNow
                 });
         }
 
         // Save to vector store
-        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(VectorDatabaseCollection.Articles);
-        await recordCollection.CreateCollectionIfNotExistsAsync(ct);
-        await recordCollection.UpsertBatchAsync(records, null, ct).ToListAsync(ct);
+        await _recordCollection.CreateCollectionIfNotExistsAsync(ct);
+        await _recordCollection.UpsertBatchAsync(records, null, ct).ToListAsync(ct);
     }
 
     public async Task<IEnumerable<string>> GetMatchingRecordsAsync(string query, string source, int numberOfRecords, CancellationToken ct)
@@ -62,21 +63,20 @@ public class VectorDatabaseService : IVectorDatabaseService
 
         var options = new VectorSearchOptions
         {
-            Top = numberOfRecords
+            Top = numberOfRecords,
+            Filter = new VectorSearchFilter().EqualTo(nameof(RagRecord.Source), source)
         };
 
-        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(source);
-        var searchResults = await recordCollection.VectorizedSearchAsync(queryEmbedding, options, ct);
+        var searchResults = await _recordCollection.VectorizedSearchAsync(queryEmbedding, options, ct);
         var searchResultsRecords = await searchResults.Results.ToListAsync(ct);
         var allSourcesForResults = searchResultsRecords.Select(x => x.Record.Content);
         return allSourcesForResults;
     }
 
-    public async Task RecreateCollection(string collectionName, CancellationToken ct)
+    public async Task RecreateCollection(CancellationToken ct)
     {
-        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(collectionName);
-        await recordCollection.DeleteCollectionAsync(ct);
-        await recordCollection.CreateCollectionIfNotExistsAsync(ct);
+        await _recordCollection.DeleteCollectionAsync(ct);
+        await _recordCollection.CreateCollectionIfNotExistsAsync(ct);
     }
 
     public async Task SaveFactToVectorDbAsync(string factText, string factKeywords, CancellationToken ct)
@@ -91,14 +91,13 @@ public class VectorDatabaseService : IVectorDatabaseService
             Id = Guid.NewGuid(),
             Embedding = embedding,
             Content = factText,
-            Source = "Fact",
+            Source = VectorDatabaseCollection.Facts,
             Type = "Text",
             CreatedAt = DateTimeOffset.UtcNow
         };
 
         // Save to vector store
-        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(VectorDatabaseCollection.Facts);
-        await recordCollection.CreateCollectionIfNotExistsAsync(ct);
-        await recordCollection.UpsertAsync(record, null, ct);
+        await _recordCollection.CreateCollectionIfNotExistsAsync(ct);
+        await _recordCollection.UpsertAsync(record, null, ct);
     }
 }

@@ -45,7 +45,7 @@ public sealed class ArticleProcessorService
 
             var articleParagraphs = await ExtractText(doc, ct);
 
-            await _vectorDatabaseService.RecreateCollection(VectorDatabaseCollection.Articles, ct);
+            await _vectorDatabaseService.RecreateCollection(ct);
             await _vectorDatabaseService.SaveArticleToVectorDbAsync(articleParagraphs, ct);
 
             var parsedQuestions = ParseQuestions(questions);

@@ -60,7 +60,7 @@ public class FactAnalyzerService
 
     private async Task StoreFactsInDbAsync(Dictionary<string, string> factKeywords, CancellationToken ct)
     {
-        await _vectorDatabaseService.RecreateCollection(VectorDatabaseCollection.Facts, ct);
+        await _vectorDatabaseService.RecreateCollection(ct);
 
         foreach (var (path, keywords) in factKeywords)
         {
