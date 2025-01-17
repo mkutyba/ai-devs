@@ -11,6 +11,7 @@ using Agent.Application.JsonCompleter;
 using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
 using Agent.Application.VisionAnalysis;
+using Agent.Application.WeaponsAnalyzer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Agent.Application;
@@ -36,6 +37,7 @@ public static class DependencyInjection
         services.AddTransient<ArticleProcessorService>();
         services.AddTransient<ImageDescriptorService>();
         services.AddTransient<FactAnalyzerService>();
+        services.AddTransient<WeaponsAnalyzerService>();
 
         return services;
     }

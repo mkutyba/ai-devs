@@ -75,15 +75,16 @@ public class VectorDatabaseService : IVectorDatabaseService
 
     public async Task RecreateCollection(CancellationToken ct)
     {
+        await _recordCollection.CreateCollectionIfNotExistsAsync(ct);
         await _recordCollection.DeleteCollectionAsync(ct);
         await _recordCollection.CreateCollectionIfNotExistsAsync(ct);
     }
 
-    public async Task SaveFactToVectorDbAsync(string factText, string factKeywords, CancellationToken ct)
+    public async Task SaveFactToVectorDbAsync(string factText, string factContents, string source, CancellationToken ct)
     {
         var embedding = await _aiService.GetEmbeddingAsync(
             AiModelType.TextEmbedding3Large,
-            factKeywords,
+            factContents,
             ct);
 
         var record = new RagRecord
@@ -91,7 +92,7 @@ public class VectorDatabaseService : IVectorDatabaseService
             Id = Guid.NewGuid(),
             Embedding = embedding,
             Content = factText,
-            Source = VectorDatabaseCollection.Facts,
+            Source = source,
             Type = "Text",
             CreatedAt = DateTimeOffset.UtcNow
         };

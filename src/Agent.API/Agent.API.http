@@ -36,3 +36,5 @@ POST https://centrala.ag3nts.org/report
     "2024-11-12_report-09-sektor_C2.txt" : "Patrol, godzina 03:45, zachodnie peryferia, brak anomalii, Sektor C, fabryka, testowanie nowoczesnej broni, zaawansowane systemy bezpieczeństwa, materiały niebezpieczne, niekontrolowane eksplozje, stanowiska testowe, ściany przeciwodłamkowe, broń o dużej mocy, automatyczne systemy monitorujące, technicy, inżynierowie, uprawnieni pracownicy, identyfikatory, odzież ochronna, tajne prace, archiwizacja testów, raportowanie, wyżsi przełożeni."
   }
 }
+###
+GET https://localhost:5084/task12

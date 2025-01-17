@@ -65,7 +65,7 @@ public class FactAnalyzerService
         foreach (var (path, keywords) in factKeywords)
         {
             var factContent = await File.ReadAllTextAsync(path, ct);
-            await _vectorDatabaseService.SaveFactToVectorDbAsync(factContent, keywords, ct);
+            await _vectorDatabaseService.SaveFactToVectorDbAsync(factContent, keywords, VectorDatabaseCollection.Facts, ct);
         }
     }
 
