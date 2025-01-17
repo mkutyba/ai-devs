@@ -1,4 +1,5 @@
 ﻿using Agent.Application.Ai;
+using Agent.Application.ApiDbInteraction;
 using Agent.Application.ArticleProcessor;
 using Agent.Application.AudioToText;
 using Agent.Application.Censor;
@@ -38,6 +39,7 @@ public static class DependencyInjection
         services.AddTransient<ImageDescriptorService>();
         services.AddTransient<FactAnalyzerService>();
         services.AddTransient<WeaponsAnalyzerService>();
+        services.AddTransient<ApiDbInteractionService>();
 
         return services;
     }

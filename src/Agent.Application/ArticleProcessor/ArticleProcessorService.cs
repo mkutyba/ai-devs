@@ -122,7 +122,7 @@ public sealed class ArticleProcessorService
 
     private async Task<string> ProcessImage(HtmlNode node, CancellationToken ct)
     {
-        var baseUrl = new Uri(_hqService.GetTask10ArticleBaseUrl());
+        var baseUrl = new Uri(_hqService.Task10ArticleBaseUrl);
         var imgNode = node.SelectSingleNode(".//img");
         var captionNode = node.SelectSingleNode(".//figcaption");
 
@@ -146,7 +146,7 @@ public sealed class ArticleProcessorService
 
     private async Task<string> ProcessAudio(HtmlNode node, CancellationToken ct)
     {
-        var baseUrl = new Uri(_hqService.GetTask10ArticleBaseUrl());
+        var baseUrl = new Uri(_hqService.Task10ArticleBaseUrl);
 
         var sourceNode = node.SelectSingleNode(".//source");
 

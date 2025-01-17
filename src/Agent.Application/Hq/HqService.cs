@@ -9,15 +9,19 @@ namespace Agent.Application.Hq;
 
 public class HqService
 {
+    public string ApiKey { get; }
     private readonly HttpClient _httpClient;
     private readonly ILogger<HqService> _logger;
     private readonly HqSettings _settings;
+    public string Task10ArticleBaseUrl => $"{_settings.BaseUrl.TrimEnd('/')}/dane/";
+    public string ApiDbUrl => $"{_settings.BaseUrl.TrimEnd('/')}/apidb";
 
     public HqService(IHttpClientFactory httpClientFactory, ILogger<HqService> logger, IOptions<HqSettings> settings)
     {
         _httpClient = httpClientFactory.CreateClient(HttpClientType.ResilientClient);
         _logger = logger;
         _settings = settings.Value;
+        ApiKey = _settings.ApiKey;
     }
 
     public async Task<HttpResponseMessage> SendReportAsync(string taskName, object answer, CancellationToken ct)
@@ -92,10 +96,5 @@ public class HqService
             _logger.LogError(ex, "Failed to get article");
             throw;
         }
-    }
-
-    public string GetTask10ArticleBaseUrl()
-    {
-        return $"{_settings.BaseUrl.TrimEnd('/')}/dane/";
     }
 }

@@ -38,3 +38,5 @@ POST https://centrala.ag3nts.org/report
 }
 ###
 GET https://localhost:5084/task12
+###
+GET https://localhost:5084/task13
