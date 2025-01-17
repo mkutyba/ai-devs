@@ -13,5 +13,6 @@ public static class AiModelConfiguration
             { AiModelType.Phi35, ("phi3.5", AiProvider.Ollama) },
             { AiModelType.Whisper1, ("whisper-1", AiProvider.OpenAIAudio) },
             { AiModelType.Dalle3, ("dall-e-3", AiProvider.OpenAIImage) },
+            { AiModelType.TextEmbedding3Large, ("text-embedding-3-large", AiProvider.OpenAIEmbedding) },
         };
 }

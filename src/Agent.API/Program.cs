@@ -18,7 +18,7 @@ builder.Logging.AddSerilog();
 builder.AddServiceDefaults();
 builder.Services.AddApplication();
 builder.Services.AddPresentation(builder.Configuration);
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(builder);
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 builder.Services.AddHealthChecks()

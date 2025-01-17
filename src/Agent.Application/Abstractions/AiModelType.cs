@@ -8,4 +8,5 @@ public enum AiModelType
     Whisper1,
     Gpt4o_202411,
     Dalle3,
+    TextEmbedding3Large,
 }

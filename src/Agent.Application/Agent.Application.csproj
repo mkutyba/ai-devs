@@ -3,6 +3,7 @@
     <CodeAnalysisRuleSet>..\..\StyleCopsRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
     <PackageReference Include="Microsoft.Extensions.Options" />
@@ -13,6 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agent.Core\Agent.Core.csproj" />

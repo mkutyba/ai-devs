@@ -16,9 +16,16 @@ if (OllamaSupportsGpu())
     ollama.WithContainerRuntimeArgs("--gpus=all");
 }
 
+var qdrant = builder.AddQdrant("qdrant")
+    .WithOtlpExporter()
+    .WithHttpEndpoint(port: 33267, targetPort: 6333, name: "dashboard", isProxied: false)
+    .WithDataVolume("rag")
+    .WithLifetime(ContainerLifetime.Persistent);
+
 builder.AddProject<Projects.Agent_API>("api")
     .WithReference(phi35)
     .WithReference(llama31_8b)
+    .WithReference(qdrant)
     .WithHttpHealthCheck("/health")
     .WithEnvironment("RobotLogin:PageUrl", param1)
     .WithEnvironment("RobotLogin:Username", param2)

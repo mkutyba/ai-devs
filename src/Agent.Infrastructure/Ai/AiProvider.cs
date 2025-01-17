@@ -5,5 +5,6 @@ public enum AiProvider
     OpenAI,
     OpenAIAudio,
     OpenAIImage,
+    OpenAIEmbedding,
     Ollama,
 }

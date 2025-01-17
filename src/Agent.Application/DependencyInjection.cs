@@ -1,7 +1,9 @@
 ﻿using Agent.Application.Ai;
+using Agent.Application.ArticleProcessor;
 using Agent.Application.AudioToText;
 using Agent.Application.Censor;
 using Agent.Application.Hq;
+using Agent.Application.ImageDescriptor;
 using Agent.Application.InformationClassifier;
 using Agent.Application.InformationExtractor;
 using Agent.Application.JsonCompleter;
@@ -30,6 +32,8 @@ public static class DependencyInjection
         services.AddTransient<MapAnalysisService>();
         services.AddTransient<ImageGenerationService>();
         services.AddTransient<InformationClassifierService>();
+        services.AddTransient<ArticleProcessorService>();
+        services.AddTransient<ImageDescriptorService>();
 
         return services;
     }

@@ -55,4 +55,47 @@ public class HqService
         var data = await _httpClient.GetFromJsonAsync<HqRobotDescription>(url, ct);
         return data?.Description ?? throw new InvalidDataException("Failed to get robot description");
     }
+
+    public async Task<string> GetTask10QuestionsAsync(CancellationToken ct)
+    {
+        try
+        {
+            var url = $"{_settings.BaseUrl.TrimEnd('/')}/data/{_settings.ApiKey}/arxiv.txt";
+            _logger.LogInformation("Downloading questions from: {Url}", url);
+
+            var response = await _httpClient.GetAsync(url, ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get questions");
+            throw;
+        }
+    }
+
+    public async Task<string> GetTask10ArticleAsync(CancellationToken ct)
+    {
+        try
+        {
+            var url = $"{_settings.BaseUrl.TrimEnd('/')}/dane/arxiv-draft.html";
+            _logger.LogInformation("Downloading article from: {Url}", url);
+
+            var response = await _httpClient.GetAsync(url, ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get article");
+            throw;
+        }
+    }
+
+    public string GetTask10ArticleBaseUrl()
+    {
+        return $"{_settings.BaseUrl.TrimEnd('/')}/dane/";
+    }
 }

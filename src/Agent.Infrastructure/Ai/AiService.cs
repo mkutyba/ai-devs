@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AudioToText;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Embeddings;
 using Microsoft.SemanticKernel.TextToImage;
 
 namespace Agent.Infrastructure.Ai;
@@ -27,6 +28,32 @@ public class AiService : IAiService
 
         _logger.LogDebug("Chat user message: {UserMessage}", userMessage);
         history.AddUserMessage(userMessage);
+
+        var chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>(modelId.ToString());
+        var response = await chatCompletionService.GetChatMessageContentAsync(history, cancellationToken: ct);
+        _logger.LogDebug("Chat response: {ResponseContent}", response.Content);
+
+        return response.Content ?? string.Empty;
+    }
+
+    public async Task<string> GetChatCompletionWithImagesAsync(AiModelType modelId, string systemMessage, string userMessage, ReadOnlyMemory<byte>[] images, CancellationToken ct)
+    {
+        ChatHistory history = [];
+        history.AddSystemMessage(systemMessage);
+        _logger.LogDebug("Chat system message: {SystemMessage}", systemMessage);
+
+        _logger.LogDebug("Chat user message: {UserMessage}", userMessage);
+        var messageContent = new ChatMessageContentItemCollection
+        {
+            new TextContent(userMessage)
+        };
+
+        foreach (var imageBytes in images)
+        {
+            messageContent.Add(new ImageContent(imageBytes, "image/jpeg"));
+        }
+
+        history.AddUserMessage(messageContent);
 
         var chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>(modelId.ToString());
         var response = await chatCompletionService.GetChatMessageContentAsync(history, cancellationToken: ct);
@@ -103,6 +130,13 @@ public class AiService : IAiService
         var result = await textToImageService.GetImageContentsAsync(new TextContent(userMessage), executionSettings, cancellationToken: ct);
 
         return result[0].Uri?.ToString() ?? string.Empty;
+    }
+
+    public async Task<float[]> GetEmbeddingAsync(AiModelType modelId, string text, CancellationToken ct)
+    {
+        var embeddingService = _kernel.GetRequiredService<ITextEmbeddingGenerationService>(modelId.ToString());
+        var embeddings = await embeddingService.GenerateEmbeddingAsync(text, cancellationToken: ct);
+        return embeddings.ToArray();
     }
 
     private static (int Width, int Height) GetImageDimensions(AiImageSize size) =>
