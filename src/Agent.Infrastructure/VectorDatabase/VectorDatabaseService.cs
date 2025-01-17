@@ -9,13 +9,11 @@ public class VectorDatabaseService : IVectorDatabaseService
 {
     private readonly IAiService _aiService;
     private readonly IVectorStore _vectorStore;
-    private readonly IVectorizedSearch<RagRecord> _vectorSearch;
 
-    public VectorDatabaseService(IAiService aiService, IVectorStore vectorStore, IVectorizedSearch<RagRecord> vectorSearch)
+    public VectorDatabaseService(IAiService aiService, IVectorStore vectorStore)
     {
         _aiService = aiService;
         _vectorStore = vectorStore;
-        _vectorSearch = vectorSearch;
     }
 
     public async Task SaveArticleToVectorDbAsync(List<ArticleParagraph> paragraphs, CancellationToken ct)
@@ -50,25 +48,57 @@ public class VectorDatabaseService : IVectorDatabaseService
         }
 
         // Save to vector store
-        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>("articles");
-        await recordCollection.DeleteCollectionAsync(ct);
+        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(VectorDatabaseCollection.Articles);
         await recordCollection.CreateCollectionIfNotExistsAsync(ct);
         await recordCollection.UpsertBatchAsync(records, null, ct).ToListAsync(ct);
     }
 
-    public async Task<IEnumerable<string>> GetMatchingRecordsAsync(string search, int numberOfRecords, CancellationToken ct)
+    public async Task<IEnumerable<string>> GetMatchingRecordsAsync(string query, string source, int numberOfRecords, CancellationToken ct)
     {
-        ReadOnlyMemory<float> questionEmbedding = await _aiService.GetEmbeddingAsync(
+        ReadOnlyMemory<float> queryEmbedding = await _aiService.GetEmbeddingAsync(
             AiModelType.TextEmbedding3Large,
-            search,
+            query,
             ct);
 
-        var searchResults = await _vectorSearch.VectorizedSearchAsync(questionEmbedding, new VectorSearchOptions
+        var options = new VectorSearchOptions
         {
             Top = numberOfRecords
-        }, ct);
+        };
+
+        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(source);
+        var searchResults = await recordCollection.VectorizedSearchAsync(queryEmbedding, options, ct);
         var searchResultsRecords = await searchResults.Results.ToListAsync(ct);
         var allSourcesForResults = searchResultsRecords.Select(x => x.Record.Content);
         return allSourcesForResults;
+    }
+
+    public async Task RecreateCollection(string collectionName, CancellationToken ct)
+    {
+        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(collectionName);
+        await recordCollection.DeleteCollectionAsync(ct);
+        await recordCollection.CreateCollectionIfNotExistsAsync(ct);
+    }
+
+    public async Task SaveFactToVectorDbAsync(string factText, string factKeywords, CancellationToken ct)
+    {
+        var embedding = await _aiService.GetEmbeddingAsync(
+            AiModelType.TextEmbedding3Large,
+            factKeywords,
+            ct);
+
+        var record = new RagRecord
+        {
+            Id = Guid.NewGuid(),
+            Embedding = embedding,
+            Content = factText,
+            Source = "Fact",
+            Type = "Text",
+            CreatedAt = DateTimeOffset.UtcNow
+        };
+
+        // Save to vector store
+        var recordCollection = _vectorStore.GetCollection<Guid, RagRecord>(VectorDatabaseCollection.Facts);
+        await recordCollection.CreateCollectionIfNotExistsAsync(ct);
+        await recordCollection.UpsertAsync(record, null, ct);
     }
 }

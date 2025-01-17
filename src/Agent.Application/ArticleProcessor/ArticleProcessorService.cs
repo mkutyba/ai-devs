@@ -45,6 +45,7 @@ public sealed class ArticleProcessorService
 
             var articleParagraphs = await ExtractText(doc, ct);
 
+            await _vectorDatabaseService.RecreateCollection(VectorDatabaseCollection.Articles, ct);
             await _vectorDatabaseService.SaveArticleToVectorDbAsync(articleParagraphs, ct);
 
             var parsedQuestions = ParseQuestions(questions);
@@ -201,7 +202,7 @@ public sealed class ArticleProcessorService
 
         foreach (var (questionId, questionText) in questions)
         {
-            var allSourcesForResults = await _vectorDatabaseService.GetMatchingRecordsAsync(questionText, 5, ct);
+            var allSourcesForResults = await _vectorDatabaseService.GetMatchingRecordsAsync(questionText, VectorDatabaseCollection.Articles, 5, ct);
 
             var prompt = $"""
                           Based on the following context, answer the question. 

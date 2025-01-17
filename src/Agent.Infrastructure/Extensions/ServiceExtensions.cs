@@ -17,7 +17,8 @@ public static class ServiceExtensions
             .AddAi(builder.Configuration)
             .AddKernel()
             .AddQdrantVectorStore()
-            .AddQdrantVectorStoreRecordCollection<Guid, RagRecord>("articles");
+            .AddQdrantVectorStoreRecordCollection<Guid, RagRecord>(VectorDatabaseCollection.Articles)
+            .AddQdrantVectorStoreRecordCollection<Guid, RagRecord>(VectorDatabaseCollection.Facts);
 
         services.AddSettings(builder.Configuration);
 

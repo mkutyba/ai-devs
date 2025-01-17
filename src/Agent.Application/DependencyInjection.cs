@@ -2,6 +2,7 @@
 using Agent.Application.ArticleProcessor;
 using Agent.Application.AudioToText;
 using Agent.Application.Censor;
+using Agent.Application.FactAnalyzer;
 using Agent.Application.Hq;
 using Agent.Application.ImageDescriptor;
 using Agent.Application.InformationClassifier;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddTransient<InformationClassifierService>();
         services.AddTransient<ArticleProcessorService>();
         services.AddTransient<ImageDescriptorService>();
+        services.AddTransient<FactAnalyzerService>();
 
         return services;
     }
