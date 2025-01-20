@@ -139,6 +139,27 @@ public class AiService : IAiService
         return embeddings.ToArray();
     }
 
+    public async Task<string> GetChatCompletionWithFunctionsAsync(AiModelType modelId, string systemMessage, string userMessage, CancellationToken ct)
+    {
+        ChatHistory history = [];
+        history.AddSystemMessage(systemMessage);
+        _logger.LogDebug("Chat system message: {SystemMessage}", systemMessage);
+
+        _logger.LogDebug("Chat user message: {UserMessage}", userMessage);
+        history.AddUserMessage(userMessage);
+
+        var promptExecutionSettings = new OpenAIPromptExecutionSettings
+        {
+            FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+        };
+
+        var chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>(modelId.ToString());
+        var response = await chatCompletionService.GetChatMessageContentAsync(history, promptExecutionSettings, _kernel, ct);
+        _logger.LogDebug("Chat response: {ResponseContent}", response.Content);
+
+        return response.Content ?? string.Empty;
+    }
+
     private static (int Width, int Height) GetImageDimensions(AiImageSize size) =>
         size switch
         {

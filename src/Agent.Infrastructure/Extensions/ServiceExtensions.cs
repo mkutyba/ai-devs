@@ -1,6 +1,7 @@
 ﻿using Agent.Application.Abstractions;
 using Agent.Application.ArticleProcessor;
 using Agent.Infrastructure.Ai;
+using Agent.Infrastructure.Ai.Plugins;
 using Agent.Infrastructure.VectorDatabase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
     {
         services
             .AddAi(builder.Configuration)
+            .AddAiPlugins()
             .AddKernel()
             .AddQdrantVectorStore()
             .AddQdrantVectorStoreRecordCollection<Guid, RagRecord>("learnings");
@@ -22,6 +24,18 @@ public static class ServiceExtensions
         services.AddSettings(builder.Configuration);
 
         builder.AddQdrantClient("qdrant");
+
+        return services;
+    }
+
+    private static IServiceCollection AddKernel(this IServiceCollection services)
+    {
+        services.AddTransient(serviceProvider =>
+        {
+            KernelPluginCollection pluginCollection = serviceProvider.GetRequiredService<KernelPluginCollection>();
+
+            return new Kernel(serviceProvider, pluginCollection);
+        });
 
         return services;
     }
@@ -65,6 +79,18 @@ public static class ServiceExtensions
                     throw new ArgumentOutOfRangeException(provider.ToString());
             }
         }
+
+        return services;
+    }
+
+    private static IServiceCollection AddAiPlugins(this IServiceCollection services)
+    {
+        services.AddTransient<HqApiDbPlugin>();
+
+        services.AddSingleton<KernelPluginCollection>(serviceProvider =>
+        [
+            KernelPluginFactory.CreateFromObject(serviceProvider.GetRequiredService<HqApiDbPlugin>()),
+        ]);
 
         return services;
     }

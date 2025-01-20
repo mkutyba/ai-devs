@@ -8,4 +8,5 @@ public interface IAiService
     Task<string> GetVisionChatCompletionAsync(AiModelType modelId, string systemMessage, string userMessage, IReadOnlyCollection<ReadOnlyMemory<byte>> imageData, CancellationToken ct);
     Task<string> GenerateImageAsync(AiModelType modelId, string userMessage, AiImageSize imageSize, AiImageQuality imageQuality, CancellationToken ct);
     Task<float[]> GetEmbeddingAsync(AiModelType modelId, string text, CancellationToken ct);
+    Task<string> GetChatCompletionWithFunctionsAsync(AiModelType modelId, string systemMessage, string userMessage, CancellationToken ct);
 }

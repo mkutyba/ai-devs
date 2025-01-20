@@ -12,5 +12,12 @@ internal sealed class Get : IEndpoint
 
             return result.IsSuccess ? Results.Ok(result.Content) : Results.Problem(result.Content, statusCode: 500);
         });
+
+        app.MapGet("/task13fn", async (ApiDbInteractionWithFunctionsService apiDbInteractionService, CancellationToken ct) =>
+        {
+            var result = await apiDbInteractionService.CompleteTask13Async(ct);
+
+            return result.IsSuccess ? Results.Ok(result.Content) : Results.Problem(result.Content, statusCode: 500);
+        });
     }
 }

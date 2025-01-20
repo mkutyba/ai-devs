@@ -40,6 +40,7 @@ public static class DependencyInjection
         services.AddTransient<FactAnalyzerService>();
         services.AddTransient<WeaponsAnalyzerService>();
         services.AddTransient<ApiDbInteractionService>();
+        services.AddTransient<ApiDbInteractionWithFunctionsService>();
 
         return services;
     }
