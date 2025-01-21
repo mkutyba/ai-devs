@@ -15,6 +15,8 @@ public class HqService
     private readonly HqSettings _settings;
     public string Task10ArticleBaseUrl => $"{_settings.BaseUrl.TrimEnd('/')}/dane/";
     public string ApiDbUrl => $"{_settings.BaseUrl.TrimEnd('/')}/apidb";
+    public string PeopleDbUrl => $"{_settings.BaseUrl.TrimEnd('/')}/people";
+    public string PlacesDbUrl => $"{_settings.BaseUrl.TrimEnd('/')}/places";
 
     public HqService(IHttpClientFactory httpClientFactory, ILogger<HqService> logger, IOptions<HqSettings> settings)
     {
@@ -94,6 +96,25 @@ public class HqService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to get article");
+            throw;
+        }
+    }
+
+    public async Task<string> GetTask14FileAsync(CancellationToken ct)
+    {
+        try
+        {
+            var url = $"{_settings.BaseUrl.TrimEnd('/')}/dane/barbara.txt";
+            _logger.LogInformation("Downloading data from: {Url}", url);
+
+            var response = await _httpClient.GetAsync(url, ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get data");
             throw;
         }
     }
