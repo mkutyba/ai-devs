@@ -9,6 +9,7 @@ using Agent.Application.ImageDescriptor;
 using Agent.Application.InformationClassifier;
 using Agent.Application.InformationExtractor;
 using Agent.Application.JsonCompleter;
+using Agent.Application.PhotoToolsInteraction;
 using Agent.Application.RobotLogin;
 using Agent.Application.RobotVerifier;
 using Agent.Application.VisionAnalysis;
@@ -41,6 +42,7 @@ public static class DependencyInjection
         services.AddTransient<WeaponsAnalyzerService>();
         services.AddTransient<ApiDbInteractionService>();
         services.AddTransient<ApiDbInteractionWithFunctionsService>();
+        services.AddTransient<PhotoToolsInteractionService>();
 
         return services;
     }

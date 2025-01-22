@@ -14,6 +14,11 @@ public class ImageDescriptorService
         _httpClient = httpClientFactory.CreateClient(HttpClientType.ResilientClient);
     }
 
+    public Task<string> DescribeImageAsync(string url, string alt, string caption, CancellationToken ct)
+    {
+        return DescribeImageAsync(new Uri(url), alt, caption, ct);
+    }
+
     public async Task<string> DescribeImageAsync(Uri url, string alt, string caption, CancellationToken ct)
     {
         try
