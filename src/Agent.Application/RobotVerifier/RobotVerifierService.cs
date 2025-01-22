@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using Agent.Application.Abstractions;
+using Agent.Application.Abstractions.Ai;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

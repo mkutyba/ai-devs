@@ -1,4 +1,4 @@
-﻿namespace Agent.Application.Abstractions;
+﻿namespace Agent.Application.Abstractions.Ai;
 
 public interface IAiService
 {

@@ -9,6 +9,7 @@
     <PackageReference Include="Aspire.Hosting.AppHost" />
     <PackageReference Include="Aspire.Hosting.Qdrant" />
     <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ollama" />
+    <PackageReference Include="NorthernNerds.Aspire.Hosting.Neo4j" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agent.API\Agent.API.csproj" />

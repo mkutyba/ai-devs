@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Agent.Application.Abstractions;
+using Agent.Application.Abstractions.Ai;
 
 namespace Agent.Application.ImageDescriptor;
 

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Agent.Application.Abstractions;
+using Agent.Application.Abstractions.Ai;
 using Agent.Application.Hq;
 using Microsoft.Extensions.Logging;
 

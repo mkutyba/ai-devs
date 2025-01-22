@@ -7,3 +7,4 @@
 /.idea
 /.run
 /src/Agent.API/data
+/src/Agent.API/logs

@@ -1,5 +1,6 @@
 ﻿using System.Text;
-using Agent.Application.Abstractions;
+using Agent.Application.Abstractions.Ai;
+using Agent.Application.Abstractions.VectorDatabase;
 using Agent.Application.ArticleProcessor;
 using Microsoft.Extensions.VectorData;
 

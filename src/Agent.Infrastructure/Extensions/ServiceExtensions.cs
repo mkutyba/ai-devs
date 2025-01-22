@@ -1,12 +1,16 @@
-﻿using Agent.Application.Abstractions;
+﻿using Agent.Application.Abstractions.Ai;
+using Agent.Application.Abstractions.GraphDatabase;
+using Agent.Application.Abstractions.VectorDatabase;
 using Agent.Application.ArticleProcessor;
 using Agent.Infrastructure.Ai;
 using Agent.Infrastructure.Ai.Plugins;
+using Agent.Infrastructure.GraphDatabase;
 using Agent.Infrastructure.VectorDatabase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.SemanticKernel;
+using NorthernNerds.Aspire.Neo4j;
 
 namespace Agent.Infrastructure.Extensions;
 
@@ -24,6 +28,9 @@ public static class ServiceExtensions
         services.AddSettings(builder.Configuration);
 
         builder.AddQdrantClient("qdrant");
+        services.AddTransient<IVectorDatabaseService, VectorDatabaseService>();
+        builder.AddNeo4jClient("graph-db");
+        services.AddTransient<IGraphDatabaseService, GraphDatabaseService>();
 
         return services;
     }
@@ -43,7 +50,6 @@ public static class ServiceExtensions
     private static IServiceCollection AddAi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IAiService, AiService>();
-        services.AddTransient<IVectorDatabaseService, VectorDatabaseService>();
 
         var settings = configuration.GetSection(AiSettings.ConfigurationKey).Get<AiSettings>()!;
 

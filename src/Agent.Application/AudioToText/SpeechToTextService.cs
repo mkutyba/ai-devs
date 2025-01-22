@@ -1,4 +1,4 @@
-﻿using Agent.Application.Abstractions;
+﻿using Agent.Application.Abstractions.Ai;
 using Microsoft.Extensions.Logging;
 
 namespace Agent.Application.AudioToText;

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Agent.Application.Abstractions;
+namespace Agent.Application.Abstractions.Ai;
 
 public record AIResponse(
     [property: JsonPropertyName("thinking_process")]

@@ -17,6 +17,8 @@
     <PackageVersion Include="NCalcSync" Version="5.3.1" />
     <PackageVersion Include="NetArchTest.Rules" Version="1.3.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="NorthernNerds.Aspire.Hosting.Neo4j" Version="2.0.0" />
+    <PackageVersion Include="NorthernNerds.Aspire.Neo4j" Version="2.0.0" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
     <PackageVersion Include="Scalar.AspNetCore" Version="1.2.72" />

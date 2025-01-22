@@ -1,6 +1,6 @@
 ﻿using Agent.Application.ArticleProcessor;
 
-namespace Agent.Application.Abstractions;
+namespace Agent.Application.Abstractions.VectorDatabase;
 
 public interface IVectorDatabaseService
 {
