@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
         README.md = README.md
         stylecop.json = stylecop.json
         StyleCopsRules.ruleset = StyleCopsRules.ruleset
+        convert_to_jsonl.sh = convert_to_jsonl.sh
     EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".run", ".run", "{B3B1C5E1-4D3B-4B8E-8B1E-1C5E4D3B4B8E}"

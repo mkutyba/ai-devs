@@ -9,4 +9,5 @@ public enum AiModelType
     Gpt4o_202411,
     Dalle3,
     TextEmbedding3Large,
+    Gpt4o_Mini_202407_FineTunedS04E02,
 }

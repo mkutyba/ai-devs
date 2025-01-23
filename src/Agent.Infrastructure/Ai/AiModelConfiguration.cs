@@ -14,5 +14,6 @@ public static class AiModelConfiguration
             { AiModelType.Whisper1, ("whisper-1", AiProvider.OpenAIAudio) },
             { AiModelType.Dalle3, ("dall-e-3", AiProvider.OpenAIImage) },
             { AiModelType.TextEmbedding3Large, ("text-embedding-3-large", AiProvider.OpenAIEmbedding) },
+            { AiModelType.Gpt4o_Mini_202407_FineTunedS04E02, ("ft:gpt-4o-mini-2024-07-18:personal:finetuneds04e02:AszNtjov", AiProvider.OpenAI) },
         };
 }

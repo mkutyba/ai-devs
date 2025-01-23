@@ -3,6 +3,7 @@ using Agent.Application.ApiDbInteraction;
 using Agent.Application.ArticleProcessor;
 using Agent.Application.AudioToText;
 using Agent.Application.Censor;
+using Agent.Application.DataClassifier;
 using Agent.Application.FactAnalyzer;
 using Agent.Application.Hq;
 using Agent.Application.ImageDescriptor;
@@ -43,6 +44,7 @@ public static class DependencyInjection
         services.AddTransient<ApiDbInteractionService>();
         services.AddTransient<ApiDbInteractionWithFunctionsService>();
         services.AddTransient<PhotoToolsInteractionService>();
+        services.AddTransient<DataClassifierService>();
 
         return services;
     }

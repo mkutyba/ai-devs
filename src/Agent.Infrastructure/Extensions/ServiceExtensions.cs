@@ -1,4 +1,5 @@
-﻿using Agent.Application.Abstractions.Ai;
+﻿using System.Globalization;
+using Agent.Application.Abstractions.Ai;
 using Agent.Application.Abstractions.GraphDatabase;
 using Agent.Application.Abstractions.VectorDatabase;
 using Agent.Application.ArticleProcessor;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.SemanticKernel;
+using Neo4j.Driver;
 using NorthernNerds.Aspire.Neo4j;
 
 namespace Agent.Infrastructure.Extensions;
@@ -29,7 +31,16 @@ public static class ServiceExtensions
 
         builder.AddQdrantClient("qdrant");
         services.AddTransient<IVectorDatabaseService, VectorDatabaseService>();
-        builder.AddNeo4jClient("graph-db");
+        if (Convert.ToBoolean(builder.Configuration.GetSection("Aspire").Value, CultureInfo.InvariantCulture))
+        {
+            builder.AddNeo4jClient("graph-db");
+        }
+        else
+        {
+            IDriver driver = new FakeDriver();
+            builder.Services.AddSingleton(driver);
+        }
+
         services.AddTransient<IGraphDatabaseService, GraphDatabaseService>();
 
         return services;
@@ -99,5 +110,70 @@ public static class ServiceExtensions
         ]);
 
         return services;
+    }
+
+    private class FakeDriver : IDriver
+    {
+        public void Dispose()
+        {
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return default;
+        }
+
+        public IAsyncSession AsyncSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAsyncSession AsyncSession(Action<SessionConfigBuilder> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CloseAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IServerInfo> GetServerInfoAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> TryVerifyConnectivityAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task VerifyConnectivityAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SupportsMultiDbAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SupportsSessionAuthAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExecutableQuery<IRecord, IRecord> ExecutableQuery(string cypher)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> VerifyAuthenticationAsync(IAuthToken authToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Config Config { get; } = null!;
+        public bool Encrypted { get; }
     }
 }
